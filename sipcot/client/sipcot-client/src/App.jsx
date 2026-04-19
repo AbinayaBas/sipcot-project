@@ -50,44 +50,36 @@ function Layout({ children }) {
 
       <div className="main-area">
 
-        {/* 🔥 LOGO HEADER (ADDED) */}
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          padding: "10px 15px",
-          background: "#1e3c72",
-          color: "white"
-        }}>
-          <img 
-            src="/assets/logo.png" 
-            alt="logo" 
-            style={{ width: "40px", height: "40px" }}
-          />
-          <h2 style={{ margin: 0 }}>
-            SIPCOT Industrial Data Management
-          </h2>
-        </div>
-
-        {/* EXISTING STRIP */}
         {isAdmin ? (
           <div className="admin-control-strip" role="banner">
-            <div className="admin-control-strip-left">
-              <span className="admin-control-strip-title">Admin Control Panel</span>
-              <span className="admin-control-strip-sub">
-                Logged in as <strong>{user?.name || 'Administrator'}</strong>
-              </span>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img src="/assets/logo.png" alt="logo" style={{ width: "35px", height: "35px" }} />
+
+              <div>
+                <span className="admin-control-strip-title">Admin Control Panel</span>
+                <span className="admin-control-strip-sub">
+                  Logged in as <strong>{user?.name || 'Administrator'}</strong>
+                </span>
+              </div>
             </div>
+
             <span className="badge badge-admin-role">ADMIN</span>
           </div>
         ) : (
           <div className="industry-control-strip" role="banner">
-            <div className="industry-control-strip-left">
-              <span className="industry-control-strip-title">Industry User Portal</span>
-              <span className="industry-control-strip-sub">
-                Logged in as <strong>{user?.name || 'Industry user'}</strong>
-              </span>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img src="/assets/logo.png" alt="logo" style={{ width: "35px", height: "35px" }} />
+
+              <div>
+                <span className="industry-control-strip-title">Industry User Portal</span>
+                <span className="industry-control-strip-sub">
+                  Logged in as <strong>{user?.name || 'Industry user'}</strong>
+                </span>
+              </div>
             </div>
+
             <span className="badge badge-industry-role">INDUSTRY</span>
           </div>
         )}
