@@ -31,7 +31,6 @@ import AdminStackConcept from './pages/AdminStackConcept';
 import AdminAuditLogs from './pages/AdminAuditLogs';
 import IndustryActivity from './pages/IndustryActivity';
 import TenderSelection from './pages/TenderSelection';
-
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>;
@@ -47,57 +46,32 @@ function Layout({ children }) {
   return (
     <div className="app-layout">
       <Sidebar />
-
       <div className="main-area">
-
         {isAdmin ? (
           <div className="admin-control-strip" role="banner">
-
-            {/* ✅ LOGO ADDED HERE */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <img src="/assets/logo.png" alt="logo" style={{ width: "35px", height: "35px" }} />
-
-                <div className="admin-control-strip-left">
-                  <span className="admin-control-strip-title">Admin Control Panel</span>
-                  <span className="admin-control-strip-sub">
-                    Logged in as <strong>{user?.name || 'Administrator'}</strong>
-                  </span>
-                </div>
-              </div>
-
-              <span className="badge badge-admin-role">
-                ADMIN
+            <div className="admin-control-strip-left">
+              <span className="admin-control-strip-title">Admin Control Panel</span>
+              <span className="admin-control-strip-sub">
+                Logged in as <strong>{user?.name || 'Administrator'}</strong>
               </span>
-
             </div>
+            <span className="badge badge-admin-role" title="Administrator access">
+              ADMIN
+            </span>
           </div>
         ) : (
           <div className="industry-control-strip" role="banner">
-
-            {/* ✅ LOGO ADDED HERE */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <img src="/assets/logo.png" alt="logo" style={{ width: "35px", height: "35px" }} />
-
-                <div className="industry-control-strip-left">
-                  <span className="industry-control-strip-title">Industry User Portal</span>
-                  <span className="industry-control-strip-sub">
-                    Logged in as <strong>{user?.name || 'Industry user'}</strong>
-                  </span>
-                </div>
-              </div>
-
-              <span className="badge badge-industry-role">
-                INDUSTRY
+            <div className="industry-control-strip-left">
+              <span className="industry-control-strip-title">Industry User Portal</span>
+              <span className="industry-control-strip-sub">
+                Logged in as <strong>{user?.name || 'Industry user'}</strong>
               </span>
-
             </div>
+            <span className="badge badge-industry-role" title="Industry account — returns & updates">
+              INDUSTRY
+            </span>
           </div>
         )}
-
         <main className="main-content">{children}</main>
       </div>
     </div>
@@ -107,7 +81,6 @@ function Layout({ children }) {
 function AppRoutes() {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>;
-
   const defaultPath = user?.role === 'admin' ? '/admin/dashboard' : '/dashboard';
 
   return (
