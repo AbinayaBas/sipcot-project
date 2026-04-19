@@ -31,6 +31,7 @@ import AdminStackConcept from './pages/AdminStackConcept';
 import AdminAuditLogs from './pages/AdminAuditLogs';
 import IndustryActivity from './pages/IndustryActivity';
 import TenderSelection from './pages/TenderSelection';
+
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>;
@@ -46,7 +47,29 @@ function Layout({ children }) {
   return (
     <div className="app-layout">
       <Sidebar />
+
       <div className="main-area">
+
+        {/* 🔥 LOGO HEADER (ADDED) */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          padding: "10px 15px",
+          background: "#1e3c72",
+          color: "white"
+        }}>
+          <img 
+            src="/assets/logo.png" 
+            alt="logo" 
+            style={{ width: "40px", height: "40px" }}
+          />
+          <h2 style={{ margin: 0 }}>
+            SIPCOT Industrial Data Management
+          </h2>
+        </div>
+
+        {/* EXISTING STRIP */}
         {isAdmin ? (
           <div className="admin-control-strip" role="banner">
             <div className="admin-control-strip-left">
@@ -55,9 +78,7 @@ function Layout({ children }) {
                 Logged in as <strong>{user?.name || 'Administrator'}</strong>
               </span>
             </div>
-            <span className="badge badge-admin-role" title="Administrator access">
-              ADMIN
-            </span>
+            <span className="badge badge-admin-role">ADMIN</span>
           </div>
         ) : (
           <div className="industry-control-strip" role="banner">
@@ -67,11 +88,10 @@ function Layout({ children }) {
                 Logged in as <strong>{user?.name || 'Industry user'}</strong>
               </span>
             </div>
-            <span className="badge badge-industry-role" title="Industry account — returns & updates">
-              INDUSTRY
-            </span>
+            <span className="badge badge-industry-role">INDUSTRY</span>
           </div>
         )}
+
         <main className="main-content">{children}</main>
       </div>
     </div>
@@ -81,41 +101,23 @@ function Layout({ children }) {
 function AppRoutes() {
   const { user, loading } = useAuth();
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>;
+
   const defaultPath = user?.role === 'admin' ? '/admin/dashboard' : '/dashboard';
 
   return (
     <Routes>
       <Route path="/login" element={!user ? <Login /> : <Navigate to={defaultPath} replace />} />
       <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" replace />} />
+
       <Route path="/dashboard" element={<ProtectedRoute><Layout><IndustryDashboard /></Layout></ProtectedRoute>} />
-      <Route path="/about-sipcot" element={<ProtectedRoute><Layout><IndustrySipcotInfo /></Layout></ProtectedRoute>} />
-      <Route path="/updates" element={<ProtectedRoute><Layout><IndustryUpdates /></Layout></ProtectedRoute>} />
-      <Route path="/guide/submission-cycle" element={<ProtectedRoute><Layout><IndustryGuideSubmissionCycle /></Layout></ProtectedRoute>} />
-      <Route path="/guide/targeting" element={<ProtectedRoute><Layout><IndustryGuideTargeting /></Layout></ProtectedRoute>} />
-      <Route path="/guide/workflow" element={<ProtectedRoute><Layout><IndustryGuideWorkflow /></Layout></ProtectedRoute>} />
-      <Route path="/guide/downloads" element={<ProtectedRoute><Layout><IndustryGuideDownloads /></Layout></ProtectedRoute>} />
-      <Route path="/guide/walkthrough/:slug" element={<ProtectedRoute><Layout><IndustryWalkthroughStep /></Layout></ProtectedRoute>} />
-      <Route path="/guide/returns/:slug" element={<ProtectedRoute><Layout><IndustryReturnDomain /></Layout></ProtectedRoute>} />
       <Route path="/industry" element={<ProtectedRoute><Layout><MyIndustry /></Layout></ProtectedRoute>} />
       <Route path="/data/submit" element={<ProtectedRoute><Layout><SubmitData /></Layout></ProtectedRoute>} />
       <Route path="/data/my" element={<ProtectedRoute><Layout><MyData /></Layout></ProtectedRoute>} />
-      <Route path="/activity" element={<ProtectedRoute><Layout><IndustryActivity /></Layout></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
+
       <Route path="/admin/dashboard" element={<ProtectedRoute adminOnly><Layout><AdminDashboard /></Layout></ProtectedRoute>} />
       <Route path="/admin/industries" element={<ProtectedRoute adminOnly><Layout><AdminIndustries /></Layout></ProtectedRoute>} />
-      <Route path="/admin/tender-selection" element={<ProtectedRoute adminOnly><Layout><TenderSelection /></Layout></ProtectedRoute>} />
-      <Route path="/admin/records" element={<ProtectedRoute adminOnly><Layout><AdminRecords /></Layout></ProtectedRoute>} />
-      <Route path="/admin/users" element={<ProtectedRoute adminOnly><Layout><AdminUsers /></Layout></ProtectedRoute>} />
-      <Route path="/admin/audit-logs" element={<ProtectedRoute adminOnly><Layout><AdminAuditLogs /></Layout></ProtectedRoute>} />
-      <Route path="/admin/export" element={<ProtectedRoute adminOnly><Layout><ExportReport /></Layout></ProtectedRoute>} />
-      <Route path="/admin/about-sipcot" element={<ProtectedRoute adminOnly><Layout><AdminSipcotInfo /></Layout></ProtectedRoute>} />
-      <Route path="/admin/announcements" element={<ProtectedRoute adminOnly><Layout><AdminAnnouncements /></Layout></ProtectedRoute>} />
-      <Route path="/admin/schedule" element={<ProtectedRoute adminOnly><Layout><AdminSchedule /></Layout></ProtectedRoute>} />
-      <Route path="/admin/documents" element={<ProtectedRoute adminOnly><Layout><AdminDocuments /></Layout></ProtectedRoute>} />
-      <Route path="/admin/guide/review/:slug" element={<ProtectedRoute adminOnly><Layout><AdminAboutDomain /></Layout></ProtectedRoute>} />
-      <Route path="/admin/guide/stack/:slug" element={<ProtectedRoute adminOnly><Layout><AdminStackConcept /></Layout></ProtectedRoute>} />
+
       <Route path="/" element={<Navigate to={user ? defaultPath : '/login'} replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
